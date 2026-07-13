@@ -142,6 +142,38 @@ function rewriteLinks(html) {
   return html;
 }
 
+/* Auto-linkify bare URLs / domains / emails in visible text.
+   Skips anything already inside <a>, <script>, or <style>, and never
+   touches tag attributes (only text between tags is processed). */
+const URL_RE = /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})|((?:https?:\/\/|www\.)[^\s<]+)|([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.(?:sch\.id|co\.id|ac\.id|go\.id|or\.id|id|com|net|org|edu|io|app)(?:\/[^\s<]*)?)/g;
+const LINK_STYLE = 'color:#006195; text-decoration:underline; text-underline-offset:2px;';
+
+function linkifyText(text) {
+  return text.replace(URL_RE, (full, email, url, domain) => {
+    if (email) return `<a href="mailto:${email}" style="${LINK_STYLE}">${email}</a>`;
+    let token = url || domain;
+    let trail = '';
+    const tm = token.match(/[).,;:!?\]}'"»]+$/);           // keep trailing punctuation outside the link
+    if (tm) { trail = tm[0]; token = token.slice(0, -trail.length); }
+    const href = /^https?:\/\//i.test(token) ? token : 'https://' + token;
+    return `<a href="${href}" target="_blank" rel="noopener" style="${LINK_STYLE}">${token}</a>${trail}`;
+  });
+}
+
+function linkify(html) {
+  const skipOpen = /^<(a|script|style)\b/i;
+  const skipClose = /^<\/(a|script|style)\s*>/i;
+  let depth = 0;
+  return html.split(/(<[^>]+>)/g).map(tok => {
+    if (tok.startsWith('<')) {
+      if (skipClose.test(tok)) depth = Math.max(0, depth - 1);
+      else if (skipOpen.test(tok) && !/\/>$/.test(tok)) depth++;
+      return tok;
+    }
+    return depth > 0 ? tok : linkifyText(tok);
+  }).join('');
+}
+
 function shell({ title, desc, body, canonical, ogImage }) {
   const fullTitle = title === 'Beranda'
     ? 'Kurikulum Unggul & Berakhlak — Al Akhyar Islamic School'
@@ -193,6 +225,7 @@ for (const fname of readdirSync(pagesDir)) {
   body = body.replace(/<dc-import name="KurikulumWebFooter"[^>]*><\/dc-import>/i, () => beforeFooter + renderFooter());
 
   body = rewriteLinks(body);
+  body = linkify(body);
 
   const out = FILEMAP[fname];
   const meta = isHome
