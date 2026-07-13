@@ -155,7 +155,7 @@ function shell({ title, desc, body, canonical, ogImage }) {
 <meta name="description" content="${desc}">
 <meta name="theme-color" content="#006195">
 <link rel="canonical" href="${canonical}">
-<link rel="icon" type="image/png" href="favicon.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kurikulum Unggul & Berakhlak — Al Akhyar Islamic School">
 <meta property="og:title" content="${fullTitle}">
