@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kurikulum.alakhyar.sch.id/sitemap.xml

@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Large source PDF — the published guide is hosted on Google Drive
+# (see the PDF constant in build.mjs). Kept locally, not in the repo.
+src/*.pdf
