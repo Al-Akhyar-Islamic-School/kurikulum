@@ -52,7 +52,7 @@ const KOMBEL_DOCS = [
     edisi: 'Tahun Ajaran 2026/2027',
     koordinator: 'Yassir Amri, S.Ag',
     file: 'dokumen/panduan-fikih-ibadah-al-akhyar-2026.pdf',
-    ukuran: 'PDF · 536 KB',
+    ukuran: 'PDF · 555 KB · 42 halaman',
     rujukan: "Al-Qur'an & hadits shahih, pendapat mu'tamad madzhab Syafi'i, Safinatun Najah, Fathul Qorib",
     isi: [
       'Thaharah — wudhu, tayammum, adab istinja',
