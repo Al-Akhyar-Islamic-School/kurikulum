@@ -32,6 +32,69 @@ const CH = [
   { n:13, roman:'XIII', nav:'Penutup',            title:'Penutup & Glosarium',                          desc:'Pesan penutup dan istilah kurikulum.',                                  file:'bab-13-penutup.html',                   color:'#1B93C6' },
 ];
 
+/* ============================================================
+   Pustaka Rujukan — produk Komunitas Belajar (KomBel)
+   Menambah dokumen baru = tambahkan satu objek di bawah.
+   status: 'tersedia' | 'disiapkan'
+   ============================================================ */
+const KOMBEL_SK = 'SK Ketua I Yayasan No. 047/YPI-ALAKHYAR/Int.001/VI/2026';
+
+const KOMBEL_DOCS = [
+  {
+    status: 'tersedia',
+    kombel: 'Arrasikhun',
+    bidang: 'Fikih & Ibadah',
+    color: '#218A62',
+    title: 'Panduan Fikih Ibadah Harian Al Akhyar',
+    subtitle: 'Rujukan standar thaharah, sholat, dan doa harian',
+    desc: 'Satu rujukan tunggal agar tata cara wudhu, bacaan sholat, dan doa harian diajarkan seragam di seluruh unit — dari KB hingga SMA. Setiap bacaan disajikan lengkap: teks Arab, transliterasi Latin, terjemahan, dan riwayat sumbernya.',
+    badge: 'Wajib digunakan',
+    edisi: 'Tahun Ajaran 2026/2027',
+    koordinator: 'Yassir Amri, S.Ag',
+    file: 'dokumen/panduan-fikih-ibadah-al-akhyar-2026.pdf',
+    ukuran: 'PDF · 536 KB',
+    rujukan: "Al-Qur'an & hadits shahih, pendapat mu'tamad madzhab Syafi'i, Safinatun Najah, Fathul Qorib",
+    isi: [
+      'Thaharah — wudhu, tayammum, adab istinja',
+      'Adzan, iqamah, dan adab ke masjid',
+      'Sholat fardhu — tata cara standar Al Akhyar',
+      'SOP ibadah harian sekolah — DUTA (Dhuha & Tadarrus), Zuhur, Ashar',
+      'Tata cara doa di dalam kelas',
+      'Kumpulan doa harian',
+      'Fikih puasa Ramadhan di sekolah',
+      'Target capaian fikih ibadah per jenjang',
+      'Peran guru, pembiasaan, dan evaluasi',
+      'Lampiran — kartu ringkasan rukun & sunnah sholat',
+    ],
+  },
+  {
+    status: 'disiapkan',
+    kombel: 'Mumtaz',
+    bidang: 'Tahfidz & Hadits',
+    color: '#B9790C',
+    title: 'Perangkat Tahfidz — Target & Instrumen Asesmen',
+    desc: 'Penjabaran metode Sabaq–Sabqi–Manzil, target hafalan per jenjang, serta instrumen penilaian tahfidz yang dikawal Kombel Mumtaz.',
+  },
+  {
+    status: 'disiapkan',
+    kombel: 'Lintas Bidang Studi',
+    bidang: 'CP & ATP',
+    color: '#006195',
+    title: 'Capaian Pembelajaran & Alur Tujuan Pembelajaran',
+    desc: 'Dokumen CP dan ATP setiap jenjang dan mata pelajaran, disusun masing-masing KomBel guru bidang studi sebagai turunan operasional Bagian IX panduan kurikulum.',
+  },
+  {
+    status: 'disiapkan',
+    kombel: 'Lintas Bidang Studi',
+    bidang: 'Modul Ajar',
+    color: '#EC2A6B',
+    title: 'Kumpulan Modul Ajar & Perangkat Pembelajaran',
+    desc: 'Contoh modul ajar hasil Lesson Study antar-KomBel, siap diadaptasi guru sesuai karakteristik kelasnya.',
+  },
+];
+
+const RUJUKAN_FILE = 'rujukan.html';
+
 /* Map original .dc.html filenames -> clean output filenames */
 const FILEMAP = { 'kurikulum-web-beranda.dc.html': 'index.html' };
 for (const c of CH) {
@@ -62,7 +125,10 @@ function renderNav(active) {
         <div style="font-size:10.5px; color:#6B7683;">Al Akhyar Islamic School</div>
       </div>
     </a>
-    <a href="index.html" style="font-size:12.5px; font-weight:700; color:#006195; text-decoration:none; padding:8px 16px; border:1.5px solid #006195; border-radius:999px; flex-shrink:0;">← Beranda</a>
+    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+      <a href="${RUJUKAN_FILE}" style="font-size:12.5px; font-weight:700; color:${active === 'rujukan' ? '#fff' : '#218A62'}; background:${active === 'rujukan' ? '#218A62' : 'transparent'}; text-decoration:none; padding:8px 16px; border:1.5px solid #218A62; border-radius:999px;">Rujukan KomBel</a>
+      <a href="index.html" style="font-size:12.5px; font-weight:700; color:#006195; text-decoration:none; padding:8px 16px; border:1.5px solid #006195; border-radius:999px;">← Beranda</a>
+    </div>
   </div>
   <div id="chapterChips" style="max-width:1180px; margin:0 auto; padding:0 24px 14px 24px; display:flex; gap:8px; overflow-x:auto;">
       ${chips}
@@ -119,6 +185,100 @@ function renderGrid() {
         <p style="font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; color:#1E2A32; margin:0 0 5px 0;">${c.title}</p>
         <p style="font-size:11.5px; color:#6B7683; line-height:1.55; margin:0;">${c.desc}</p>
       </a>`).join('\n      ');
+}
+
+/* ---------- Pustaka Rujukan KomBel ---------- */
+function renderDocTersedia(d) {
+  return `<article style="border:1px solid #E1E7ED; border-radius:16px; overflow:hidden; margin-bottom:18px;">
+      <div style="background:linear-gradient(120deg,#17694C,${d.color}); padding:24px 26px;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+          <span style="display:inline-block; padding:5px 13px; border-radius:999px; background:rgba(255,255,255,0.18); color:#fff; font-weight:800; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;">Kombel ${d.kombel}</span>
+          <span style="display:inline-block; padding:5px 13px; border-radius:999px; background:#fff; color:${d.color}; font-weight:800; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;">${d.badge}</span>
+        </div>
+        <h3 style="font-family:'Poppins',sans-serif; font-weight:800; font-size:21px; color:#fff; margin:0 0 6px 0; line-height:1.3;">${d.title}</h3>
+        <p style="font-size:13.5px; color:#DCF5EA; margin:0;">${d.subtitle}</p>
+      </div>
+      <div style="padding:24px 26px;">
+        <p style="font-size:14px; line-height:1.75; color:#3F4B55; margin:0 0 20px 0;">${d.desc}</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px;">
+          <div style="background:#F5F8FA; border:1px solid #E1E7ED; border-radius:12px; padding:13px 15px;">
+            <p style="font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#6B7683; font-weight:800; margin:0 0 4px 0;">Edisi</p>
+            <p style="font-size:12.5px; color:#1E2A32; font-weight:600; margin:0;">${d.edisi}</p>
+          </div>
+          <div style="background:#F5F8FA; border:1px solid #E1E7ED; border-radius:12px; padding:13px 15px;">
+            <p style="font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#6B7683; font-weight:800; margin:0 0 4px 0;">Koordinator</p>
+            <p style="font-size:12.5px; color:#1E2A32; font-weight:600; margin:0;">${d.koordinator}</p>
+          </div>
+        </div>
+
+        <p style="font-family:'Poppins',sans-serif; font-weight:700; font-size:13.5px; color:#1E2A32; margin:0 0 10px 0;">Cakupan Isi</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px 20px; margin-bottom:20px;">
+          ${d.isi.map(i => `<p style="font-size:12.5px; color:#3F4B55; line-height:1.6; margin:0 0 5px 0;"><span style="color:${d.color}; font-weight:700;">•</span> ${i}</p>`).join('\n          ')}
+        </div>
+
+        <div style="background:#DCF5EA; border-radius:12px; padding:14px 16px; margin-bottom:22px;">
+          <p style="font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#17694C; font-weight:800; margin:0 0 5px 0;">Dasar Rujukan</p>
+          <p style="font-size:12.5px; color:#1E2A32; line-height:1.6; margin:0;">${d.rujukan}</p>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <a href="${d.file}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; background:${d.color}; color:#fff; text-decoration:none; font-weight:700; font-size:13.5px; padding:12px 22px; border-radius:10px;">Unduh Panduan</a>
+          <span style="font-size:12px; color:#6B7683;">${d.ukuran}</span>
+        </div>
+      </div>
+    </article>`;
+}
+
+function renderDocDisiapkan(d) {
+  return `<div style="border:1px solid #E1E7ED; border-radius:14px; padding:18px; border-top:4px solid ${d.color}; background:#fff;">
+        <div style="display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-bottom:9px;">
+          <span style="display:inline-block; padding:4px 11px; border-radius:999px; background:#F5F8FA; color:#6B7683; font-weight:800; font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase;">${d.kombel}</span>
+          <span style="display:inline-block; padding:4px 11px; border-radius:999px; background:#FDEFCB; color:#8A5A06; font-weight:800; font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase;">Segera</span>
+        </div>
+        <p style="font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; color:#1E2A32; margin:0 0 6px 0; line-height:1.35;">${d.title}</p>
+        <p style="font-size:11.5px; color:#6B7683; line-height:1.6; margin:0;">${d.desc}</p>
+      </div>`;
+}
+
+function renderRujukanBody() {
+  const tersedia = KOMBEL_DOCS.filter(d => d.status === 'tersedia');
+  const disiapkan = KOMBEL_DOCS.filter(d => d.status === 'disiapkan');
+  return `<div style="font-family:'Plus Jakarta Sans',sans-serif; background:#fff;">
+${renderNav('rujukan')}
+
+<div style="background:linear-gradient(120deg,#17694C,#218A62);">
+  <div style="max-width:960px; margin:0 auto; padding:44px 24px;">
+    <div style="display:inline-block; border:1.5px solid rgba(255,255,255,0.5); color:#fff; padding:5px 14px; border-radius:999px; font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px;">Pustaka Rujukan</div>
+    <h1 style="font-family:'Poppins',sans-serif; font-weight:800; font-size:32px; color:#fff; margin:0 0 10px 0;">Produk Komunitas Belajar</h1>
+    <p style="font-size:14.5px; color:#DCF5EA; max-width:600px; line-height:1.7; margin:0;">Dokumen turunan Kurikulum Unggul &amp; Berakhlak yang disusun oleh Komunitas Belajar (KomBel) guru bidang studi — menjadi rujukan operasional harian di seluruh unit Al Akhyar.</p>
+  </div>
+</div>
+
+<div style="max-width:960px; margin:0 auto; padding:40px 24px;">
+
+  <h2 style="font-family:'Poppins',sans-serif; font-weight:800; font-size:19px; color:#1E2A32; margin:0 0 12px 0;">A. Tentang Komunitas Belajar</h2>
+  <p style="font-size:14px; line-height:1.75; color:#3F4B55; margin:0 0 12px 0;">Komunitas Belajar (KomBel) adalah forum guru per bidang studi yang dibentuk melalui <strong>${KOMBEL_SK}</strong>. Selain menjadi wadah pengembangan kompetensi guru — bersama IHT dan Lesson Study sebagaimana diuraikan pada <a href="bab-11-evaluasi-kurikulum.html">Bagian XI</a> — setiap KomBel bertugas menghasilkan perangkat rujukan yang menyeragamkan praktik di seluruh unit.</p>
+  <p style="font-size:14px; line-height:1.75; color:#3F4B55; margin:0 0 32px 0;">Halaman ini menghimpun produk resmi tiap KomBel. Dokumen bersifat <em>hidup</em>: ditinjau berkala, dan versi terbarunya selalu diterbitkan di sini.</p>
+
+  <h2 style="font-family:'Poppins',sans-serif; font-weight:800; font-size:19px; color:#1E2A32; margin:0 0 6px 0;">B. Dokumen Tersedia</h2>
+  <p style="font-size:13px; color:#6B7683; margin:0 0 16px 0;">Sudah disahkan dan berlaku pada Tahun Ajaran 2026/2027.</p>
+  ${tersedia.map(renderDocTersedia).join('\n  ')}
+
+  <h2 style="font-family:'Poppins',sans-serif; font-weight:800; font-size:19px; color:#1E2A32; margin:32px 0 6px 0;">C. Sedang Disiapkan</h2>
+  <p style="font-size:13px; color:#6B7683; margin:0 0 16px 0;">Produk KomBel lain yang sedang disusun dan akan menyusul di halaman ini.</p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:32px;">
+      ${disiapkan.map(renderDocDisiapkan).join('\n      ')}
+  </div>
+
+  <div style="background:#F5F8FA; border:1px solid #E1E7ED; border-radius:16px; padding:22px 26px;">
+    <p style="font-family:'Poppins',sans-serif; font-weight:700; font-size:14.5px; color:#1E2A32; margin:0 0 8px 0;">Bagi guru dan musyrif/musyrifah</p>
+    <p style="font-size:13px; color:#3F4B55; line-height:1.7; margin:0;">Dokumen berstatus <strong>wajib digunakan</strong> bersifat mengikat seluruh unit KB/TK, SD, SMP, dan SMA. Usulan penyempurnaan disampaikan melalui koordinator KomBel masing-masing bersama Wakasek Kurikulum unit, untuk ditinjau setiap semester dan disahkan Bidang Pendidikan &amp; Kurikulum Yayasan.</p>
+  </div>
+</div>
+
+${renderFooter()}
+</div>`;
 }
 
 /* ---------- transform one page ---------- */
@@ -238,8 +398,18 @@ for (const fname of readdirSync(pagesDir)) {
   count++;
 }
 
+/* Pustaka Rujukan KomBel */
+writeFileSync(join(DIST, RUJUKAN_FILE), shell({
+  title: 'Rujukan & Produk Komunitas Belajar',
+  desc: 'Dokumen turunan Kurikulum Unggul & Berakhlak yang disusun Komunitas Belajar (KomBel) guru bidang studi Al Akhyar — termasuk Panduan Fikih Ibadah Harian oleh Kombel Arrasikhun.',
+  ogImage: 'cover.jpg',
+  canonical: `${SITE_URL}/${RUJUKAN_FILE}`,
+  body: linkify(renderRujukanBody()),
+}));
+count++;
+
 /* sitemap.xml */
-const urls = ['index.html', ...CH.map(c => c.file)];
+const urls = ['index.html', RUJUKAN_FILE, ...CH.map(c => c.file)];
 const today = new Date().toISOString().slice(0, 10);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
