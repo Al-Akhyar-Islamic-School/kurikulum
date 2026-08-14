@@ -14,6 +14,32 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# ------------------------------------------------------------
+# Header keamanan untuk SEMUA path.
+#
+# Sengaja "/*", bukan "/*.html": pola Netlify dicocokkan ke path
+# permintaan, bukan ke berkas hasil resolve. Pengunjung membuka
+# "/" (dan Dinar membingkai "/" juga), yang tidak cocok dengan
+# "/*.html" — jadi dulu justru halaman utama yang tidak pernah
+# dapat header ini sama sekali.
+#
+# frame-ancestors membatasi siapa yang boleh membingkai situs ini.
+# Menu "Kurikulum" di Dinar (app/kurikulum) memuat situs ini di
+# dalam iframe, jadi origin Dinar harus disebut di sini — tanpa
+# itu browser menampilkan bingkai kosong. localhost:3000 ikut
+# didaftarkan supaya menu itu bisa diuji saat `npm run dev`.
+#
+# Catatan: URL preview Vercel (*.vercel.app) berganti tiap branch
+# dan tidak masuk daftar. Kalau perlu menguji dari preview,
+# tambahkan origin-nya di sini sementara.
+# ------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "frame-ancestors 'self' https://dinar.alakhyar.sch.id https://staging.dinar.alakhyar.sch.id http://localhost:3000"
+
 # Aset statis: cache panjang (nama file stabil, diperbarui ~1x/tahun)
 [[headers]]
   for = "/assets/*"
@@ -25,10 +51,12 @@
   [headers.values]
     Cache-Control = "public, max-age=86400"
 
-# Halaman HTML: selalu divalidasi agar update konten langsung terlihat
+# Halaman HTML: selalu divalidasi agar update konten langsung terlihat.
+# Tetap "/*.html" dan tidak ikut dipindah ke "/*" karena Cache-Control di
+# "/*" akan bertabrakan dengan cache panjang /assets/*. Untuk "/" sendiri
+# Netlify sudah memberi default yang sama persis
+# (public,max-age=0,must-revalidate), jadi tidak ada yang hilang.
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
